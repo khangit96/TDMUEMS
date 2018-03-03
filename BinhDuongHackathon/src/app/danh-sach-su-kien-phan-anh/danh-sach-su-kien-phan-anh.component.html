@@ -1,0 +1,90 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h5>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="glyphicon glyphicon-calendar"></i> Today: {{date|date: 'dd/MM/yyyy'}} </a>
+      </li>
+    </ol>
+  </h5>
+  <!--  -->
+  <div class="w3-card-4" style="width:100%;margin-top: 20px;">
+    <header class="w3-container w3-red">
+      <h5>Events List</h5>
+    </header>
+    <div class="w3-container w3-border">
+      <table *ngIf="dsSuKienPhanAnh.length>0" class="w3-table-all w3-centered">
+        <tr>
+          <th>Pos</th>
+          <th>Time</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Sender</th>
+          <th>Status</th>
+          <th>Detail</th>
+        </tr>
+        <tr *ngFor="let skPhanAnh of dsSuKienPhanAnh">
+
+          <div *ngIf="checkLoaiPhanAnh(skPhanAnh.loaiPhanAnh);then content else other_content">here is ignored</div>
+          <ng-template #content>
+            <td>
+              <p>{{skPhanAnh.stt}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.thoiGian}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.moTa}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.loaiPhanAnh}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.viTri}}</p>
+            </td>
+            <td>
+              <p>+841695821150</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.tinhTrang}}</p>
+            </td>
+            <td>
+              <a (click)="chiTietSuKienPhanAnh(skPhanAnh)" [routerLink]="['/quan-tri', {outlets: {'quan-tri': ['chi-tiet-su-kien-phan-anh']}}]">View</a>
+            </td>
+          </ng-template>
+          <ng-template #other_content>
+            <td>
+              <p>{{skPhanAnh.stt}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.thoiGian}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.moTa}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.loaiPhanAnh}}</p>
+            </td>
+            <td>
+              <p>{{skPhanAnh.viTri}}</p>
+            </td>
+            <td>
+              <p>+841695821150</p>
+              <!-- <p><a href="#">Call</a></p> -->
+            </td>
+            <td>
+              <p>{{skPhanAnh.tinhTrang}}</p>
+            </td>
+            <td>
+              <a (click)="chiTietSuKienPhanAnh(skPhanAnh)" [routerLink]="['/quan-tri', {outlets: {'quan-tri': ['chi-tiet-su-kien-phan-anh']}}]">View</a>
+            </td>
+          </ng-template>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--  -->
+
+</section>

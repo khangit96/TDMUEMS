@@ -1,0 +1,32 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h5>
+    <div class="w3-panel w3-green">
+      <div class="w3-left-align">
+        <h5>{{loaiPhanAnh.ten}}</h5>
+      </div>
+    </div>
+  </h5>
+  <div  class="w3-container w3-border">
+    <table *ngIf="loaiPhanAnh.coQuan.length>0" class="w3-table w3-striped w3-bordered">
+      <tr>
+        <th>STT</th>
+        <th>Tên cơ quan</th>
+        <th>Địa chỉ</th>
+        <th>Email</th>
+        <th>Fax</th>
+        <th>Số điện thoại</th>
+      </tr>
+      <tr *ngFor="let coQuan of loaiPhanAnh.coQuan">
+        <td>{{coQuan.stt}}</td>
+        <td>{{coQuan.ten}}</td>
+        <td>{{coQuan.diaChi}}</td>
+        <td><a>{{coQuan.email}}</a></td>
+        <td>{{coQuan.fax}}</td>
+        <td>{{coQuan.soDienThoai}}</td>
+      </tr>
+    </table>
+    <!-- <h5 *ngIf="hoaDonDaThanhToan.length>0">Tổng hóa đơn: {{hoaDonDaThanhToan.length}}</h5>
+    <h5 *ngIf="hoaDonDaThanhToan.length>0">Tổng số tiền: {{tongSoTien| currency:'VND':true}}</h5> -->
+  </div>
+</section>

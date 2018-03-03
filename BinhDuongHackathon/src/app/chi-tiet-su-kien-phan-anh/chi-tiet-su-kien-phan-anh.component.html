@@ -1,0 +1,131 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="w3-bar w3-red">
+    <button (click)="clickChucNang('MoTa')" class="{{tabMoTa}}">Detail</button>
+    <!-- <button (click)="clickChucNang('HinhAnh')" class="{{tabHinhAnh}}">Hình ảnh và video</button>
+    <button (click)="clickChucNang('BanDo')" class="{{tabBanDo}}">Map</button> -->
+  </div>
+
+  <!-- Mô tả tổng quan -->
+  <div class="w3-container w3-border" [style.display]="displayMoTa?'block':'none'">
+    <div class="w3-container" style="margin-top:20px;">
+      <p>Time: {{skPhanAnh.thoiGian}}</p>
+      <p>Location: {{skPhanAnh.viTri}}</p>
+      <p>Description: {{skPhanAnh.moTa}}</p>
+      <p>Emergency type: {{skPhanAnh.loaiPhanAnh}}</p>
+    </div>
+    <div class="w3-row w3-border">
+      <div *ngFor="let url of skPhanAnh.dsUrlData" class="w3-quarter w3-container">
+
+        <div *ngIf="url.type=='image/jpeg';then content else other_content">here is ignored</div>
+        <ng-template #content>
+          <img src="{{url.urlDownload}}" alt="" height="220" width="220" />
+        </ng-template>
+        <ng-template #other_content>
+          <video height="220" width="220" controls>
+            <source src="{{url.urlDownload}}" type="video/mp4">
+          </video>
+        </ng-template>
+      </div>
+    </div>
+    <div class="w3-row w3-border">
+      <agm-map [zoom]="zoom" [latitude]="skPhanAnh.viDo" [longitude]="skPhanAnh.kinhDo">
+        <agm-marker [iconUrl]="iconPhanAnhURL" (markerClick)="showViTriTaiNan()" [latitude]="skPhanAnh.viDo" [longitude]="skPhanAnh.kinhDo">
+          <agm-info-window>
+            <h5>
+              <strong>Vị trí phản ánh</strong>
+            </h5>
+            <p>Vị trí: {{skPhanAnh.viTri}}</p>
+            <p>Mô tả : {{skPhanAnh.moTa}}</p>
+            <p>Thời gian : {{skPhanAnh.thoiGian}}</p>
+          </agm-info-window>
+        </agm-marker>
+        <!-- <agm-marker [iconUrl]="iconCoQuan" *ngFor="let coQuan of dsCoQuan" (markerClick)="showMaker(coQuan)" [latitude]="coQuan.viDo"
+          [longitude]="coQuan.kinhDo">
+          <agm-info-window>
+            <h5>
+              <strong>{{coQuan.ten}} </strong>
+            </h5>
+            <p> Địa chỉ: {{coQuanSelected.diaChi}}</p>
+            <p>Số điện thoại: {{coQuanSelected.soDienThoai}}</p>
+            <p>Email: {{coQuanSelected.email}}
+              <p>Ứng dụng:
+                <button (click)="SendNhanVien(nhanVien)">Gửi ứng dụng</button>
+              </p>
+
+          </agm-info-window>
+        </agm-marker>
+        <agm-marker [iconUrl]="iconCongAn" *ngFor="let nhanVien of dsNhanVien" (markerClick)="showNhanVien(nhanVien)" [latitude]="nhanVien.viDo"
+          [longitude]="nhanVien.kinhDo">
+          <agm-info-window>
+            <h5>
+              <strong>{{nhanVien.ten}} </strong>
+            </h5>
+            <p>Địa chỉ: {{nhanVien.diaChi}}</p>
+            <p>Ứng dụng:
+              <button (click)="SendNhanVien(nhanVien)">{{textButton}}</button>
+            </p>
+          </agm-info-window>
+        </agm-marker> -->
+      </agm-map>
+    </div>
+
+    <!-- Suggesion agencies -->
+    <div class="w3-card-4" style="width:100%;margin-top: 20px;">
+      <header class="w3-container w3-blue">
+        <h5>Suggestion Agencies</h5>
+      </header>
+
+      <div class="w3-container">
+        <table class="w3-table-all w3-centered">
+          <tr>
+            <th>Pos</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Application</th>
+          </tr>
+          <tr *ngFor="let coQuan of dsCoQuan">
+            <td>{{coQuan.stt}}</td>
+            <td>{{coQuan.ten}}</td>
+            <td>
+              {{coQuan.soDienThoai}}</td>
+            <td>
+              {{coQuan.diaChi}}
+            </td>
+            <td>
+              <button class="w3-button w3-green">Send</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Enforce -->
+    <div class="w3-card-4" style="width:100%;margin-top: 20px;">
+      <header class="w3-container w3-green">
+        <h5>Enforce</h5>
+      </header>
+      <div class="w3-container">
+        <table class="w3-table-all w3-centered">
+          <tr>
+            <th>Pos</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Application</th>
+          </tr>
+          <tr *ngFor="let coQuan of dsCoQuan">
+            <td>{{coQuan.stt}}</td>
+            <td>John</td>
+            <td>
+              <a>{{coQuan.soDienThoai}}</a>
+            </td>
+            <td>
+              <a>Send</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

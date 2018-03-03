@@ -1,0 +1,115 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h5>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="glyphicon glyphicon-calendar"></i> Hôm nay: {{date|date: 'dd/MM/yyyy'}} </a></li>
+    </ol>
+  </h5>
+
+  <div class="w3-bar w3-green">
+    <button (click)="clickChucNang('DaThanhToan')" class="{{classDaThanhToan}}">Đã thanh toán</button>
+    <button (click)="clickChucNang('ChuaThanhToan')" class="{{classChuaThanhToan}}">Chưa thanh toán</button>
+  </div>
+
+  <div id="inTatCa" [style.display]="displayDaThanhToan?'block':'none'" class="w3-container w3-border">
+    <table *ngIf="hoaDonDaThanhToan.length>0" class="w3-table w3-striped w3-bordered">
+      <tr>
+        <th>STT</th>
+        <th>Bàn</th>
+        <th>Nhân viên gọi</th>
+        <th>Thời gian</th>
+        <th>Tổng số tiền</th>
+        <th>Mô tả</th>
+        <th>Chi tiết</th>
+      </tr>
+      <tr *ngFor="let hoaDon of hoaDonDaThanhToan">
+        <td>{{hoaDon.stt}}</td>
+        <td>{{hoaDon.soBan}}</td>
+        <td><a>{{hoaDon.tenNhanVien}}</a></td>
+        <td>{{hoaDon.thoiGianDai}}</td>
+        <td>{{hoaDon.tongSoTien| currency:'VND':true}}</td>
+        <td>{{hoaDon.moTa}}</td>
+        <td><a href="javascript: void(0);" (click)="xemChiTiet(hoaDon)" onclick="document.getElementById('xemChiTietHoaDon').style.display='block'">Xem chi tiết</a></td>
+      </tr>
+    </table>
+    <h5 *ngIf="hoaDonDaThanhToan.length>0">Tổng hóa đơn: {{hoaDonDaThanhToan.length}}</h5>
+    <h5 *ngIf="hoaDonDaThanhToan.length>0">Tổng số tiền: {{tongSoTien| currency:'VND':true}}</h5>
+  </div><br>
+
+  <!-- HOa don chua thanh toan -->
+  <div [style.display]="displayChuaThanhToan?'block':'none'" class="w3-container w3-border">
+    <table *ngIf="hoaDonChuaThanhToan.length>0" align="center" class="w3-table w3-striped  w3-bordered w3-center">
+      <tr>
+        <th>STT</th>
+        <th>Bàn</th>
+        <th>Nhân viên gọi</th>
+        <th>Thời gian</th>
+        <th>Tổng số tiền</th>
+        <th>Mô tả</th>
+        <th>Chi tiết</th>
+      </tr>
+      <tr *ngFor="let hoaDon of hoaDonChuaThanhToan">
+        <td>{{hoaDon.stt}}</td>
+        <td>{{hoaDon.soBan}}</td>
+        <td><a>{{hoaDon.tenNhanVien}}</a></td>
+        <td>{{hoaDon.thoiGianDai}}</td>
+        <td>{{hoaDon.tongSoTien| currency:'VND':true}}</td>
+        <td>{{hoaDon.moTa}}</td>
+        <td><a href="javascript: void(0);" (click)="xemChiTiet(hoaDon)" onclick="document.getElementById('xemChiTietHoaDon').style.display='block'">Xem chi tiết</a></td>
+      </tr>
+    </table>
+  </div>
+  <a *ngIf="hoaDonDaThanhToan.length>0" href="javascript: void(0);" (click)="inTatCa()"> <i class="glyphicon glyphicon-print"></i>  In hóa đơn</a>
+
+
+  <!--Modal xem chi tiet hoa don  -->
+  <div id="xemChiTietHoaDon" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px">
+      <div class="w3-center"><br><br>
+        <span onclick="document.getElementById('xemChiTietHoaDon').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
+          title="Close Modal">&times;</span>
+        <div class="w3-container" *ngFor="let goiThucUong of danSachGoiThucUongSelected">
+          <ul class="w3-ul w3-card-4">
+            <li class="w3-bar">
+              <img src="{{goiThucUong.hinhAnh}}" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
+              <div class="w3-bar-item">
+                <span class="w3-large">{{goiThucUong.ten}}</span><br>
+                <span>{{goiThucUong.gia| currency:'VND':true}}</span><br>
+                <span>Số lượng: {{goiThucUong.soLuong}}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+        <button onclick="document.getElementById('xemChiTietHoaDon').style.display='none'" type="button" class="w3-button w3-red">Hủy</button>
+        <button *ngIf="!isThanhToan" (click)="thanhToan()" onclick="document.getElementById('xemChiTietHoaDon').style.display='none'"
+          type="button" class="w3-button w3-green  w3-right-align">Thanh Toán</button>
+        <button onclick="document.getElementById('xemChiTietHoaDon').style.display='none'" (click)="inHoaDon()" type="button" class="w3-button w3-blue">In hóa đơn</button>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="true" id="inHoaDon">
+
+    <p>Tổng số tiền: {{hoadonSelected.tongSoTien| currency:'VND':true}}</p>
+    <p>Số bàn: {{hoadonSelected.soBan}}</p>
+    <p>Mô tả: {{hoadonSelected.moTa}}</p>
+    <p>Thời gian: {{hoadonSelected.thoiGianDai}}</p>
+    <hr>
+    <p>Danh sách thức uống</p>
+    <table class="w3-table w3-striped  w3-bordered w3-center">
+        <tr>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+       </tr>
+      <tr *ngFor="let th of danSachGoiThucUongSelected">
+        <td>{{th.ten}}</td>
+        <td>{{th.gia| currency:'VND':true}}</td>
+        <td>{{th.soLuong}}</td>
+      </tr>
+    </table>
+  </div>
+
+</section>
