@@ -59,24 +59,24 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
 
   showViTriTaiNan() { }
 
-  getLoaiPhanAnhFromFirebase() {
-    const items = this.db.list("LoaiPhanAnhChinh", ref =>
-      ref.orderByChild("ten").equalTo(this.skPhanAnh.loaiPhanAnh)
-    );
-    items.snapshotChanges().subscribe(actions => {
-      actions.forEach(action => {
-        let object = action.payload.val();
-        let loaiPhanAnh = new LoaiPhanAnh(
-          object.ten,
-          object.hinhAnh,
-          object.coQuan,
-          object.NhanVien
-        );
-        this.dsCoQuan = loaiPhanAnh.coQuan;
-        this.dsNhanVien = loaiPhanAnh.nhanVien;
-      });
-    });
-  }
+  // getLoaiPhanAnhFromFirebase() {
+  //   const items = this.db.list("LoaiPhanAnhChinh", ref =>
+  //     ref.orderByChild("ten").equalTo(this.skPhanAnh.loaiPhanAnh)
+  //   );
+  //   items.snapshotChanges().subscribe(actions => {
+  //     actions.forEach(action => {
+  //       let object = action.payload.val();
+  //       let loaiPhanAnh = new LoaiPhanAnh(
+  //         object.ten,
+  //         object.hinhAnh,
+  //         object.coQuan,
+  //         object.NhanVien
+  //       );
+  //       this.dsCoQuan = loaiPhanAnh.coQuan;
+  //       this.dsNhanVien = loaiPhanAnh.nhanVien;
+  //     });
+  //   });
+  // }
 
   getDSCoQuan() {
     let count = 0;
@@ -87,14 +87,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       actions.forEach(action => {
 
         let object = action.payload.val();
-        // let loaiPhanAnh = new LoaiPhanAnh(
-        //   object.ten,
-        //   object.hinhAnh,
-        //   object.coQuan,
-        //   object.NhanVien
-        // );
-        // this.dsCoQuan = loaiPhanAnh.coQuan;
-        // this.dsNhanVien = loaiPhanAnh.nhanVien;
         this.dsCoQuan = object.coQuan;
         this.dsCoQuan.forEach(element => {
           count++;
@@ -149,5 +141,9 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       this.tabBanDo = "w3-bar-item w3-button tablink w3-red";
       this.test = true;
     }
+  }
+  // Send Agency
+  sendAgency(){
+    alert(this.skPhanAnh.key);
   }
 }

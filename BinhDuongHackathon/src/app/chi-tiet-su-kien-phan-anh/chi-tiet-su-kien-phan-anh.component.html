@@ -33,11 +33,11 @@
         <agm-marker [iconUrl]="iconPhanAnhURL" (markerClick)="showViTriTaiNan()" [latitude]="skPhanAnh.viDo" [longitude]="skPhanAnh.kinhDo">
           <agm-info-window>
             <h5>
-              <strong>Vị trí phản ánh</strong>
+              <strong>Emergency</strong>
             </h5>
-            <p>Vị trí: {{skPhanAnh.viTri}}</p>
-            <p>Mô tả : {{skPhanAnh.moTa}}</p>
-            <p>Thời gian : {{skPhanAnh.thoiGian}}</p>
+            <p>Location: {{skPhanAnh.viTri}}</p>
+            <p>Description : {{skPhanAnh.moTa}}</p>
+            <p>Time : {{skPhanAnh.thoiGian}}</p>
           </agm-info-window>
         </agm-marker>
         <!-- <agm-marker [iconUrl]="iconCoQuan" *ngFor="let coQuan of dsCoQuan" (markerClick)="showMaker(coQuan)" [latitude]="coQuan.viDo"
@@ -73,7 +73,7 @@
     <!-- Suggesion agencies -->
     <div class="w3-card-4" style="width:100%;margin-top: 20px;">
       <header class="w3-container w3-blue">
-        <h5>Suggestion Agencies</h5>
+        <h5>Suggestion nearest agencies</h5>
       </header>
 
       <div class="w3-container">
@@ -94,7 +94,7 @@
               {{coQuan.diaChi}}
             </td>
             <td>
-              <button class="w3-button w3-green">Send</button>
+              <button class="w3-button w3-green" (click)="sendAgency()" >Send</button>
             </td>
           </tr>
         </table>

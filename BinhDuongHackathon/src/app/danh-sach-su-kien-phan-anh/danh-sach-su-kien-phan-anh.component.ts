@@ -14,12 +14,12 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
   stt = 0;
   dsSuKienPhanAnh: SuKienPhanAnh[] = [];
   result: any;
-  test=false;
+  test = false;
   constructor(
     public db: AngularFireDatabase,
     public dataService: DataService,
     private chat: ApiAiService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const items = this.db.list("SuKienPhanAnh");
@@ -28,7 +28,9 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
       this.stt = 0;
       actions.forEach(action => {
         let objectSkPhanAnh = action.payload.val();
+
         let skPhanAnh = new SuKienPhanAnh(
+          action.key,
           objectSkPhanAnh.kinhDo,
           objectSkPhanAnh.viDo,
           objectSkPhanAnh.thoiGian,
@@ -59,8 +61,8 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
   chiTietSuKienPhanAnh(skPhanAnh: SuKienPhanAnh) {
     this.dataService.sendSuKienPhanAnh(skPhanAnh);
   }
-  checkLoaiPhanAnh(loaiPhanAnh){
-    if(loaiPhanAnh=="Traffic"){
+  checkLoaiPhanAnh(loaiPhanAnh) {
+    if (loaiPhanAnh == "Traffic") {
       return true;
     }
     return false;

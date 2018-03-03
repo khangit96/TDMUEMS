@@ -11,8 +11,10 @@ export class SuKienPhanAnh {
   public stt: number;
   public dsUrlData: UrlData[];
   public viTri: string;
+  public key: string;
 
   constructor(
+    key:string,
     kinhDo: number,
     viDo: number,
     thoiGian: string,
@@ -23,6 +25,7 @@ export class SuKienPhanAnh {
     dsUrlData: UrlData[],
     viTri: string
   ) {
+    this.key=key;
     this.kinhDo = kinhDo;
     this.viDo = viDo;
     this.thoiGian = thoiGian;
