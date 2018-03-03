@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<item android:id="@+id/new_game"-->
+        <!--android:icon="@drawable/ic_notifications_active_black_24dp"-->
+        <!--android:title="noti"-->
+        <!--app:showAsAction="always" />-->
+    <item android:id="@+id/help"
+        android:title="Setting" />
+</menu>

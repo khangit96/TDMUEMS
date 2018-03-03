@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_phan_anh"
+            android:id="@+id/nav_wallpaper"
+            android:title="Events " />
+        <item
+            android:icon="@drawable/ic_notifications_active_black_24dp"
+            android:id="@+id/nav_movies"
+            android:title="Notification" />
+        <item
+            android:icon="@drawable/ic_benh_vien"
+            android:id="@+id/nav_download"
+            android:title="Find hospital" />
+        <item
+            android:icon="@drawable/ic_bus"
+            android:id="@+id/nav_notifications"
+            android:title="Find Bus" />
+
+        <item
+            android:icon="@drawable/ic_atm"
+            android:id="@+id/nav_settings"
+            android:title="Find ATM" />
+    </group>
+
+    <item >
+        <menu>
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_cai_dat"
+                android:title="Setting" />
+            <item
+                android:icon="@drawable/ic_gioi_thieu"
+                android:id="@+id/nav_privacy_policy"
+                android:title="Introduction" />
+        </menu>
+    </item>
+
+</menu>
