@@ -14,12 +14,12 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
   stt = 0;
   dsSuKienPhanAnh: SuKienPhanAnh[] = [];
   result: any;
-  test = false;
+  test=false;
   constructor(
     public db: AngularFireDatabase,
     public dataService: DataService,
     private chat: ApiAiService
-  ) { }
+  ) {}
 
   ngOnInit() {
     const items = this.db.list("SuKienPhanAnh");
@@ -28,7 +28,6 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
       this.stt = 0;
       actions.forEach(action => {
         let objectSkPhanAnh = action.payload.val();
-
         let skPhanAnh = new SuKienPhanAnh(
           action.key,
           objectSkPhanAnh.kinhDo,
@@ -41,13 +40,6 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
           objectSkPhanAnh.urlDownloadList,
           objectSkPhanAnh.viTri
         );
-        // if (skPhanAnh.loaiPhanAnh == "") {
-        //   this.chat.send("Kẹt xe tại đại học thủ dầu một").then(res => {
-        //     this.result = res;
-        //     this.result = this.result.result.fulfillment.speech;
-        //     skPhanAnh.loaiPhanAnh=this.result;
-        //   });
-        // }
         this.dsSuKienPhanAnh.push(skPhanAnh);
       });
       this.dsSuKienPhanAnh.reverse();
@@ -61,8 +53,8 @@ export class DanhSachSuKienPhanAnhComponent implements OnInit {
   chiTietSuKienPhanAnh(skPhanAnh: SuKienPhanAnh) {
     this.dataService.sendSuKienPhanAnh(skPhanAnh);
   }
-  checkLoaiPhanAnh(loaiPhanAnh) {
-    if (loaiPhanAnh == "Traffic") {
+  checkLoaiPhanAnh(loaiPhanAnh){
+    if(loaiPhanAnh=="Traffic"){
       return true;
     }
     return false;

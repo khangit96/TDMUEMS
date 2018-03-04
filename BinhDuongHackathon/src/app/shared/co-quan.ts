@@ -7,6 +7,7 @@ export class CoQuan {
   public kinhDo: number;
   public viDo: number;
   public stt?:number;
+  public key:string;
   constructor(
     ten: string,
     soDienThoai: string,

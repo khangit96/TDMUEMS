@@ -77,7 +77,7 @@
       </header>
 
       <div class="w3-container">
-        <table class="w3-table-all w3-centered">
+        <table *ngIf="dsCoQuan.length>0" class="w3-table-all w3-centered">
           <tr>
             <th>Pos</th>
             <th>Name</th>
@@ -94,7 +94,7 @@
               {{coQuan.diaChi}}
             </td>
             <td>
-              <button class="w3-button w3-green" (click)="sendAgency()" >Send</button>
+              <button class="w3-button w3-green" (click)="sendAgency(coQuan)">Send</button>
             </td>
           </tr>
         </table>

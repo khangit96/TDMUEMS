@@ -34,49 +34,24 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
   coQuanSelected: CoQuan;
   textButton = "Gửi yêu cầu";
   dsNhanVien: NhanVien[] = [];
+  dsCoQuanEmergency: CoQuan[] = [];
+  coQuanEmergency: CoQuan;
   nhanVienSelected: NhanVien;
+  check = false;
+  loaiPhanAnh = "";
+
   constructor(private data: DataService, public db: AngularFireDatabase) { }
 
   ngOnInit() {
     this.data.currentSuKienPhanAnh.subscribe(
       skPhanAnh => (this.skPhanAnh = skPhanAnh)
     );
-    // this.skPhanAnh.dsUrlData.forEach(element => {
-    //   if (element.type == "image/jpeg") {
-    //     this.urlImg.push(element.urlDownload);
-    //   } else {
-    //     this.urlVid.push(element.urlDownload);
-    //   }
-    // });
 
     this.getDSCoQuan();
-    // this.getLoaiPhanAnhFromFirebase();
+    this.listenAddEmgergency();
   }
-  // showMaker(coQuan: CoQuan) {
-  //   this.coQuanSelected = coQuan;
-  //   this.showCoQuan = true;
-  // }
 
   showViTriTaiNan() { }
-
-  // getLoaiPhanAnhFromFirebase() {
-  //   const items = this.db.list("LoaiPhanAnhChinh", ref =>
-  //     ref.orderByChild("ten").equalTo(this.skPhanAnh.loaiPhanAnh)
-  //   );
-  //   items.snapshotChanges().subscribe(actions => {
-  //     actions.forEach(action => {
-  //       let object = action.payload.val();
-  //       let loaiPhanAnh = new LoaiPhanAnh(
-  //         object.ten,
-  //         object.hinhAnh,
-  //         object.coQuan,
-  //         object.NhanVien
-  //       );
-  //       this.dsCoQuan = loaiPhanAnh.coQuan;
-  //       this.dsNhanVien = loaiPhanAnh.nhanVien;
-  //     });
-  //   });
-  // }
 
   getDSCoQuan() {
     let count = 0;
@@ -84,15 +59,21 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       ref.orderByChild("ten").equalTo(this.skPhanAnh.loaiPhanAnh)
     );
     items.snapshotChanges().subscribe(actions => {
-      actions.forEach(action => {
-
-        let object = action.payload.val();
-        this.dsCoQuan = object.coQuan;
-        this.dsCoQuan.forEach(element => {
-          count++;
-          element.stt = count;
+      if (!this.check) {
+        console.log('dsCoQuan CHanged');
+        this.dsCoQuan = [];
+        actions.forEach(action => {
+          this.loaiPhanAnh = action.key;
+          let object = action.payload.val();
+          this.dsCoQuan = object.coQuan;
+          this.dsCoQuan.forEach(element => {
+            element.key = String(count);
+            count++;
+            element.stt = count;
+          });
         });
-      });
+      }
+
     });
   }
   SendNhanVien() {
@@ -106,8 +87,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       diaChi: this.nhanVienSelected.diaChi
     });
 
-    // let index = this.dsNhanVien.indexOf(this.nhanVienSelected);
-    // this.dsNhanVien.splice(index, 1);
   }
   showNhanVien(nhanVien: NhanVien) {
     this.nhanVienSelected = nhanVien;
@@ -142,8 +121,52 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       this.test = true;
     }
   }
+
+  //Listen add emergency
+  listenAddEmgergency() {
+    let itemsRef = this.db.list("SuKienPhanAnh/" + this.skPhanAnh.key + "/Emergency");
+    itemsRef.snapshotChanges(['child_added'])
+      .subscribe(actions => {
+        if (this.check) {
+          console.log('add');
+          let action = actions[actions.length - 1]
+          let object = action.payload.val();
+          this.coQuanEmergency = object;
+
+          // Push emergency to agencies
+          const items = this.db.object("LoaiPhanAnhChinh/" + this.loaiPhanAnh + "/coQuan/" + this.coQuanSelected.key + "/Emergency");
+          items.set({ 'status': 'demo' });
+          // console.log(object);
+        }
+        else {
+          console.log('loading list');
+        }
+
+      });
+
+    // let itemsRef = this.db.list('demo');
+    // itemsRef.auditTrail()
+    //   .subscribe(actions => {
+    //     console.log('change');
+    //     console.log('change');
+    //     actions.forEach(action => {
+    //       console.log(action.type);
+    //       console.log(action.key);
+    //       console.log(action.payload.val());
+    //     });
+    //   });
+  }
+
   // Send Agency
-  sendAgency(){
-    alert(this.skPhanAnh.key);
+  sendAgency(coQuan: CoQuan) {
+    this.coQuanSelected = coQuan;
+    this.check = true;
+    let count = 0;
+    const items = this.db.list("SuKienPhanAnh/" + this.skPhanAnh.key + "/Emergency");
+    items.push(coQuan);
+
+    let index = this.dsCoQuan.indexOf(coQuan);
+    this.dsCoQuan.splice(index, 1);
+    //alert(this.skPhanAnh.stt);
   }
 }

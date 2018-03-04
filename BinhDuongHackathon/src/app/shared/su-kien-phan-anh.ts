@@ -11,7 +11,7 @@ export class SuKienPhanAnh {
   public stt: number;
   public dsUrlData: UrlData[];
   public viTri: string;
-  public key: string;
+  public key:string;
 
   constructor(
     key:string,
