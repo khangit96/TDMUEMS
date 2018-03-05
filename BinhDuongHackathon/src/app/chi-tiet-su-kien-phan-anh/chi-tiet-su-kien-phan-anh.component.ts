@@ -133,8 +133,9 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
             console.log(this.coQuanSelected);
 
             // // Push emergency to agencies
-            // const items = this.db.object("LoaiPhanAnhChinh/" + this.loaiPhanAnh + "/coQuan/" + this.coQuanSelected.key + "/Emergency");
-            // items.set({ 'status': 'demo' });
+            const items = this.db.object("LoaiPhanAnhChinh/" + this.loaiPhanAnh + "/coQuan/" + this.coQuanSelected.key + "/Emergency");
+            items.set(this.coQuanSelected);
+
             actions.forEach(action => {
               let object = action.payload.val();
               this.dsCoQuanEmergency.push(object);
