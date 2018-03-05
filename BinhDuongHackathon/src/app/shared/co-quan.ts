@@ -8,6 +8,14 @@ export class CoQuan {
   public viDo: number;
   public stt?:number;
   public key:string;
+  public keyEvent:string;
+  public keyEmergency:string;
+  public status:string;
+  public addressEmergency:string;
+  public latitudeEmergency:number;
+  public longtitudeEmergency:number;
+  public descriptionEymergency:string;
+
   constructor(
     ten: string,
     soDienThoai: string,

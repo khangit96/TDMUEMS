@@ -21,7 +21,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
   displayMoTa = true;
   displayHinhAnhVaVideo = false;
   displayBanDo = false;
-  test = false;
   showCoQuan = false;
   iconPhanAnhURL = "https://i.imgur.com/fYnnrna.png";
   iconCoQuan = "https://i.imgur.com/bdt8jh0.png";
@@ -35,7 +34,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
   textButton = "Gửi yêu cầu";
   dsNhanVien: NhanVien[] = [];
   dsCoQuanEmergency: CoQuan[] = [];
-  coQuanEmergency: CoQuan;
   nhanVienSelected: NhanVien;
   check = false;
   loaiPhanAnh = "";
@@ -100,7 +98,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       this.tabMoTa = "w3-bar-item w3-button tablink w3-red";
       this.tabHinhAnh = "w3-bar-item w3-button tablink w3-green";
       this.tabBanDo = "w3-bar-item w3-button tablink w3-green";
-      this.test = false;
     } else if (content == "HinhAnh") {
       this.displayMoTa = false;
       this.displayHinhAnhVaVideo = true;
@@ -109,7 +106,6 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       this.tabMoTa = "w3-bar-item w3-button tablink w3-green";
       this.tabHinhAnh = "w3-bar-item w3-button tablink w3-red";
       this.tabBanDo = "w3-bar-item w3-button tablink w3-green";
-      this.test = false;
     } else {
       this.displayMoTa = false;
       this.displayHinhAnhVaVideo = false;
@@ -118,48 +114,62 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
       this.tabMoTa = "w3-bar-item w3-button tablink w3-green";
       this.tabHinhAnh = "w3-bar-item w3-button tablink w3-green";
       this.tabBanDo = "w3-bar-item w3-button tablink w3-red";
-      this.test = true;
     }
   }
 
   //Listen add emergency
   listenAddEmgergency() {
     let itemsRef = this.db.list("SuKienPhanAnh/" + this.skPhanAnh.key + "/Emergency");
-    itemsRef.snapshotChanges(['child_added'])
+    itemsRef.snapshotChanges()
       .subscribe(actions => {
+        this.dsCoQuanEmergency=[];
         if (this.check) {
-          console.log('add');
-          let action = actions[actions.length - 1]
-          let object = action.payload.val();
-          this.coQuanEmergency = object;
 
-          // Push emergency to agencies
-          const items = this.db.object("LoaiPhanAnhChinh/" + this.loaiPhanAnh + "/coQuan/" + this.coQuanSelected.key + "/Emergency");
-          items.set({ 'status': 'demo' });
-          // console.log(object);
+          let action = actions[actions.length - 1];
+          if (action.type == 'child_added') {
+            let object = action.payload.val();
+            this.coQuanSelected = object;
+            this.coQuanSelected.keyEmergency = action.key;
+            console.log(this.coQuanSelected);
+
+            // // Push emergency to agencies
+            // const items = this.db.object("LoaiPhanAnhChinh/" + this.loaiPhanAnh + "/coQuan/" + this.coQuanSelected.key + "/Emergency");
+            // items.set({ 'status': 'demo' });
+            actions.forEach(action => {
+              let object = action.payload.val();
+              this.dsCoQuanEmergency.push(object);
+            });
+          }
+
+          else if (action.type == 'child_changed') {
+            actions.forEach(action => {
+              let object = action.payload.val();
+              this.dsCoQuanEmergency.push(object);
+            });
+          }
         }
+
         else {
-          console.log('loading list');
+          actions.forEach(action => {
+            let object = action.payload.val();
+            this.dsCoQuanEmergency.push(object);
+          });
         }
+        console.log(this.dsCoQuanEmergency.length);
 
       });
-
-    // let itemsRef = this.db.list('demo');
-    // itemsRef.auditTrail()
-    //   .subscribe(actions => {
-    //     console.log('change');
-    //     console.log('change');
-    //     actions.forEach(action => {
-    //       console.log(action.type);
-    //       console.log(action.key);
-    //       console.log(action.payload.val());
-    //     });
-    //   });
   }
 
   // Send Agency
   sendAgency(coQuan: CoQuan) {
     this.coQuanSelected = coQuan;
+    this.coQuanSelected.keyEvent = this.skPhanAnh.key;
+    this.coQuanSelected.status='Pending';
+    this.coQuanSelected.latitudeEmergency=this.skPhanAnh.viDo;
+    this.coQuanSelected.longtitudeEmergency=this.skPhanAnh.kinhDo;
+    this.coQuanSelected.addressEmergency=this.skPhanAnh.viTri;
+    this.coQuanSelected.descriptionEymergency=this.skPhanAnh.moTa;
+    
     this.check = true;
     let count = 0;
     const items = this.db.list("SuKienPhanAnh/" + this.skPhanAnh.key + "/Emergency");
@@ -167,6 +177,5 @@ export class ChiTietSuKienPhanAnhComponent implements OnInit {
 
     let index = this.dsCoQuan.indexOf(coQuan);
     this.dsCoQuan.splice(index, 1);
-    //alert(this.skPhanAnh.stt);
   }
 }

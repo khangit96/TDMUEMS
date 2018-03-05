@@ -106,7 +106,7 @@
         <h5>Enforce</h5>
       </header>
       <div class="w3-container">
-        <table class="w3-table-all w3-centered">
+        <table *ngIf="dsCoQuanEmergency.length>0" class="w3-table-all w3-centered">
           <tr>
             <th>Pos</th>
             <th>Name</th>
@@ -114,14 +114,16 @@
             <th>Address</th>
             <th>Application</th>
           </tr>
-          <tr *ngFor="let coQuan of dsCoQuan">
+          <tr *ngFor="let coQuan of dsCoQuanEmergency">
             <td>{{coQuan.stt}}</td>
-            <td>John</td>
+            <td>{{coQuan.ten}}</td>
             <td>
-              <a>{{coQuan.soDienThoai}}</a>
+              {{coQuan.soDienThoai}}</td>
+            <td>
+              {{coQuan.diaChi}}
             </td>
             <td>
-              <a>Send</a>
+              <button class="w3-button w3-green" (click)="sendAgency(coQuan)">{{coQuan.status}}</button>
             </td>
           </tr>
         </table>
