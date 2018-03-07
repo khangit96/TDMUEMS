@@ -64,6 +64,8 @@
         <activity
             android:name=".Main2Activity"
             android:parentActivityName=".LoginActivity"></activity>
+
+        <receiver android:name=".NotificationReceiver" />
     </application>
 
 </manifest>

@@ -175,6 +175,7 @@ public class PhanAnhActivity extends AppCompatActivity implements GoogleApiClien
                                 Toast.makeText(getApplicationContext(), "Successfully processed", Toast.LENGTH_LONG).show();
                                 Intent feedbackIntent = new Intent(PhanAnhActivity.this, FeedbackActivity.class);
                                 feedbackIntent.putExtra("TITLE", title);
+                                feedbackIntent.putExtra("KEY",databaseReference.getKey());
                                 startActivity(feedbackIntent);
                             }
                         });
