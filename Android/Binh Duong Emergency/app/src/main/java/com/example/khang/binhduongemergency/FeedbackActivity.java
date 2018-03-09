@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +19,8 @@ import com.skyfishjy.library.RippleBackground;
 public class FeedbackActivity extends AppCompatActivity {
     Toolbar toolbar;
     RippleBackground rippleBackground;
-    ImageView imageView;
+    String agencyName = "";
+    TextView tvAgencyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class FeedbackActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tvAgencyName = (TextView) findViewById(R.id.tvAgencyName);
 
         String title = getIntent().getStringExtra("TITLE");
         setTitle(title);
@@ -41,12 +45,18 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dt : dataSnapshot.getChildren()) {
-                    if(!dt.child("status").getValue().equals("Pending")){
+                    if (dt.child("status").getValue().equals("Processing")) {
+                        agencyName = dt.child("ten").getValue().toString();
                         Log.d("test", "" + dt.child("status").getValue());
                     }
 
                 }
-                // Toast.makeText(getApplicationContext(), "google changed", Toast.LENGTH_LONG).show();
+                if (!agencyName.equals("")) {
+                    rippleBackground.stopRippleAnimation();
+                    rippleBackground.setVisibility(View.GONE);
+                    tvAgencyName.setText(agencyName);
+                }
+
             }
 
             @Override
