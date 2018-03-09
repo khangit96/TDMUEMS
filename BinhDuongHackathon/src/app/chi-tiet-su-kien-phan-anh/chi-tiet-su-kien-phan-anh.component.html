@@ -81,15 +81,12 @@
           <tr>
             <th>Pos</th>
             <th>Name</th>
-            <th>Phone</th>
             <th>Address</th>
             <th>Application</th>
           </tr>
           <tr *ngFor="let coQuan of dsCoQuan">
             <td>{{coQuan.stt}}</td>
             <td>{{coQuan.ten}}</td>
-            <td>
-              {{coQuan.soDienThoai}}</td>
             <td>
               {{coQuan.diaChi}}
             </td>
@@ -110,7 +107,6 @@
           <tr>
             <th>Pos</th>
             <th>Name</th>
-            <th>Phone</th>
             <th>Address</th>
             <th>Application</th>
           </tr>
@@ -118,13 +114,28 @@
             <td>{{coQuan.stt}}</td>
             <td>{{coQuan.ten}}</td>
             <td>
-              {{coQuan.soDienThoai}}</td>
-            <td>
               {{coQuan.diaChi}}
             </td>
-            <td>
-              <button class="w3-button w3-green" (click)="sendAgency(coQuan)">{{coQuan.status}}</button>
-            </td>
+
+            <div *ngIf="coQuan.status=='Pending';then pending">here is ignored</div>
+            <div *ngIf="coQuan.status=='Processing';then processing">here is ignored</div>
+            <div *ngIf="coQuan.status=='Refuse';then refuse">here is ignored</div>
+
+            <ng-template #pending>
+              <td>
+                <button class="w3-button w3-yellow" (click)="sendAgency(coQuan)">{{coQuan.status}}</button>
+              </td>
+            </ng-template>
+            <ng-template #processing>
+              <td>
+                <button class="w3-button w3-green" (click)="sendAgency(coQuan)">{{coQuan.status}}</button>
+              </td>
+            </ng-template>
+            <ng-template #refuse>
+              <td>
+                <button class="w3-button w3-red" (click)="sendAgency(coQuan)">{{coQuan.status}}</button>
+              </td>
+            </ng-template>
           </tr>
         </table>
       </div>
