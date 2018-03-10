@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +17,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.skyfishjy.library.RippleBackground;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import adapter.AgencyAdapter;
+
 public class FeedbackActivity extends AppCompatActivity {
     Toolbar toolbar;
+    ListView lvAgency;
     RippleBackground rippleBackground;
-    String agencyName = "";
-    TextView tvAgencyName;
+    List<String> agencyNameList;
+    AgencyAdapter agencyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +38,9 @@ public class FeedbackActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        tvAgencyName = (TextView) findViewById(R.id.tvAgencyName);
+        lvAgency = (ListView) findViewById(R.id.lvAgency);
+
+        agencyNameList = new ArrayList<>();
 
         String title = getIntent().getStringExtra("TITLE");
         setTitle(title);
@@ -39,24 +48,29 @@ public class FeedbackActivity extends AppCompatActivity {
         rippleBackground = (RippleBackground) findViewById(R.id.content);
         rippleBackground.startRippleAnimation();
 
+        agencyNameList = new ArrayList<>();
+
         String key = getIntent().getStringExtra("KEY");
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("SuKienPhanAnh/" + key + "/Emergency").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                agencyNameList.clear();
+
                 for (DataSnapshot dt : dataSnapshot.getChildren()) {
                     if (dt.child("status").getValue().equals("Processing")) {
-                        agencyName = dt.child("ten").getValue().toString();
-                        Log.d("test", "" + dt.child("status").getValue());
+                        agencyNameList.add(dt.child("ten").getValue().toString());
                     }
 
                 }
-                if (!agencyName.equals("")) {
+
+                if (agencyNameList.size() > 0) {
                     rippleBackground.stopRippleAnimation();
                     rippleBackground.setVisibility(View.GONE);
-                    tvAgencyName.setText(agencyName);
-                }
 
+                    agencyAdapter = new AgencyAdapter(FeedbackActivity.this, R.layout.list_agency, (ArrayList<String>) agencyNameList);
+                    lvAgency.setAdapter(agencyAdapter);
+                }
             }
 
             @Override

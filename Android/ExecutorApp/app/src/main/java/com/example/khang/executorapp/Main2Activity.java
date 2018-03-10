@@ -68,6 +68,7 @@ public class Main2Activity extends AppCompatActivity implements OnMapReadyCallba
     List<Marker> destinationMarkers = new ArrayList<>();
     List<Polyline> polylinePaths = new ArrayList<>();
     LatLng duyTanUni;
+    boolean check = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +86,6 @@ public class Main2Activity extends AppCompatActivity implements OnMapReadyCallba
         mDatabase.child("LoaiPhanAnhChinh/" + bd.getInt("POS") + "/coQuan/" + coQuan.key + "/Emergency").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dtList.clear();
-                for (DataSnapshot dt : dataSnapshot.getChildren()) {
-                    dtList.add(dt);
-                    Log.d("test", dt.getValue().toString());
-                }
                 //1 description
                 //0 location emergency
                 //6 keyEmergency
@@ -98,18 +94,30 @@ public class Main2Activity extends AppCompatActivity implements OnMapReadyCallba
                 //10 longtitude emergency
                 //8 longtitude agency
                 //17 latitude agency
-                if (dtList.size() > 0) {
+                if (check) {
 
-                    double latitudeAgency = Double.parseDouble((dtList.get(17).getValue().toString()));
-                    double longtitudeAgency = Double.parseDouble((dtList.get(8).getValue().toString()));
-                    LatLng latLngAgency = new LatLng(latitudeAgency, longtitudeAgency);
-                    String currentLocation = "" + duyTanUni.latitude + "," + duyTanUni.longitude;
-                    String des = "" + latitudeAgency + "," + longtitudeAgency;
-                    getDataFromGoogleMapServer(currentLocation, des);
-                    mMap.addMarker(new MarkerOptions().position(duyTanUni).title("Emergency Location"));
-                    mMap.addMarker(new MarkerOptions().position(latLngAgency).title(coQuan.ten).icon(BitmapDescriptorFactory.fromResource(R.drawable.congan)));
-                    showHeadsUpNotification(dtList.get(1).getValue().toString(), dtList.get(7).getValue().toString(), dtList.get(6).getValue().toString());
+                    dtList.clear();
+
+                    for (DataSnapshot dt : dataSnapshot.getChildren()) {
+                        dtList.add(dt);
+                        Log.d("test", dt.getValue().toString());
+                    }
+                    if (dtList.size() > 0) {
+
+                        double latitudeAgency = Double.parseDouble((dtList.get(17).getValue().toString()));
+                        double longtitudeAgency = Double.parseDouble((dtList.get(8).getValue().toString()));
+                        LatLng latLngAgency = new LatLng(latitudeAgency, longtitudeAgency);
+                        String currentLocation = "" + duyTanUni.latitude + "," + duyTanUni.longitude;
+                        String des = "" + latitudeAgency + "," + longtitudeAgency;
+                        getDataFromGoogleMapServer(currentLocation, des);
+                        mMap.addMarker(new MarkerOptions().position(duyTanUni).title("Emergency Location"));
+                        mMap.addMarker(new MarkerOptions().position(latLngAgency).title(coQuan.ten).icon(BitmapDescriptorFactory.fromResource(R.drawable.congan)));
+                        showHeadsUpNotification(dtList.get(1).getValue().toString(), dtList.get(7).getValue().toString(), dtList.get(6).getValue().toString());
+                        return;
+                    }
                 }
+                check = true;
+
             }
 
             @Override
