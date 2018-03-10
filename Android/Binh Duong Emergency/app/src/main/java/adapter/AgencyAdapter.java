@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.example.khang.binhduongemergency.R;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,9 @@ public class AgencyAdapter extends ArrayAdapter<String> {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         TextView tvAgencyName = (TextView) convertView.findViewById(R.id.tvAgencyName);
+        TextView tvPos = (TextView) convertView.findViewById(R.id.tvPos);
         tvAgencyName.setText(agencyList.get(position));
+        tvPos.setText(String.valueOf(position + 1));
 
         return convertView;
 
