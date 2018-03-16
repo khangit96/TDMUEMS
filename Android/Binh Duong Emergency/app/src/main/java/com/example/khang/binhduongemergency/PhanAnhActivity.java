@@ -114,7 +114,7 @@ public class PhanAnhActivity extends AppCompatActivity implements GoogleApiClien
         }
 
         setTitle(title);
-        address = "Duy Tan University, 254 Nguyen Van Linh, Thac Gian, Thanh Khe, Đa Nang, VietNam";
+        address = "Duy Tan University, 03, Quang Trung, Hai Chau, Đa Nang, VietNam";
 
         Date date = new Date();
         final String thoiGianNgan = date.getDate() + "/" + String.valueOf(date.getMonth() + 1);

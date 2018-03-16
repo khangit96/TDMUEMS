@@ -40,6 +40,15 @@
             <p>Time : {{skPhanAnh.thoiGian}}</p>
           </agm-info-window>
         </agm-marker>
+        <agm-marker [iconUrl]="iconCoQuan" *ngFor="let coQuan of dsCoQuan" [latitude]="coQuan.viDo" [longitude]="coQuan.kinhDo">
+          <agm-info-window>
+            <h5>
+              <strong>{{coQuan.ten}} </strong>
+            </h5>
+            <h5>{{coQuan.diaChi}}</h5>
+         
+          </agm-info-window>
+        </agm-marker>
         <!-- <agm-marker [iconUrl]="iconCoQuan" *ngFor="let coQuan of dsCoQuan" (markerClick)="showMaker(coQuan)" [latitude]="coQuan.viDo"
           [longitude]="coQuan.kinhDo">
           <agm-info-window>
